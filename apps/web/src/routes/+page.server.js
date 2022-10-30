@@ -1,4 +1,5 @@
 import { serializeNonPOJOs } from '$lib/helpers';
+import { DefaultProject } from '$lib/_server_utils';
 import { error } from '@sveltejs/kit';
 
 export const load = ({ locals }) => {
@@ -17,7 +18,10 @@ export const load = ({ locals }) => {
 				filter: projectsIdFilter
 			})
 		);
-		console.log(voteList);
+		projects.items.map((project) => {
+			project.votes = voteList.filter((vote) => vote.project == project.id);
+			return { DefaultProject, ...project };
+		});
 
 		return projects;
 	};
